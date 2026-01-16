@@ -19,12 +19,22 @@ async def pre_analyze(code: str, tasks: BackgroundTasks):
 
 @app.get("/analyze/{code}")
 async def analyze(code: str):
-    """유저가 클릭했을 때 캐시된 결과를 즉시 반환"""
-    result = cache.get(code)
-    if result:
-        return {"status": "success", "data": result.decode('utf-8')}
-    # 만약 캐시에 없으면 즉시 연산 (Safety Net)
-    return {"status": "success", "data": run_tci_engine(code)}
+      # --- 여기서부터 22행 시작 ---
+    """더미 데이터를 즉시 반환하여 시안을 확인하는 로직"""
+    dummy_data = {
+        "code": code,
+        "total_score": "88",
+        "T_score": "92",
+        "C_score": "75",
+        "I_score": "95",
+        "insight": "자본의 결속력이 임계점에 도달했습니다. 정보 발행자의 의도가 가격 지지선과 일치합니다.",
+        "process_t": "과거 5년간의 매집 패턴과 현재 거래량 폭발의 궤적이 92% 일치함.",
+        "process_c": "공시된 설비 투자 내역과 기사 내 언급된 생산 능력이 물리적으로 정합함.",
+        "process_i": "대주주 지분 변동 추이 역산 결과, 하방 리스크 필터링이 완료된 매집 의도 포착."
+    }
+    return {"status": "success", "data": dummy_data}
+    # --- 여기까지 27행 끝 ---
+
 
 def run_tci_engine(code):
     model = genai.GenerativeModel('gemini-3.0-pro')
